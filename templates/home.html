@@ -1,0 +1,82 @@
+
+
+{% block head %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Grafico solar</title>
+{% endblock %}
+
+  {% block styles %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css">
+        <!-- Theme Style -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <style>
+        body {
+            width: 100%;
+            background-repeat: no-repeat;
+          }
+        button{
+          width: 90%;
+          margin-top: 10px;          
+        }
+        h4{
+          margin-top: 10px;
+        }
+    </style>  
+  {% endblock %}  
+
+{% block content %}
+    <body background="{{url_for('static', filename='figura.png')}}" id="page-top" ">
+      <div id="buttons" style="float: right;width:15%;margin-top: 50px;">
+        <h4 >Fecha</h4>
+        <input type="hidden" id='fecha' value="">
+        <button  value="dia" type="button" class="btn btn-warning fecha" >Ultimo dia</button>
+        <button  value="semana" type="button" class="btn btn-info fecha" >Ultima semana</button>
+        <button  value="mes" type="button" class="btn btn-info fecha" >Ultimo mes</button>
+        <hr>
+        <h4>Datos</h4>
+        <input type="hidden" id='dato' value="">
+        <button value="" type="button" class="btn btn-info datos" >Ultimos 5 dias DE</button>
+        <button value="" type="button" class="btn btn-info datos" >Ultimos 5 dias DE</button>
+        <hr>
+        <h4>Picos</h4>
+        <input type="hidden" id='grafico' value="">
+        <button value="" type="button" class="btn btn-info grafico" >Ultimos 5 dias DE</button>
+        <button value="" type="button" class="btn btn-info grafico" >Ultimos 5 dias DE</button>
+      </div>
+    </body>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>    
+  <script src="https://kit.fontawesome.com/0d1e8a0e70.js" crossorigin="anonymous"></script>
+  <script>
+
+    $( document ).ready(function() {
+      
+      $('button').click(function(){
+        //seteo en mismo color los de su clase, cambio el color al presionado y seteo el valor del hidden con el value del presionado
+        let buttonGroup= $(this).attr('class').split(" ")[2]
+        let otrosClase = "btn btn-info " + buttonGroup
+        let pressedClase = "btn btn-warning " + buttonGroup
+        console.log(otrosClase)
+        $('.'+ buttonGroup).attr('class', otrosClase)
+        $(this).attr('class', pressedClase)
+        $('#' + buttonGroup).val($(this).attr('id'))
+        
+        $.ajax({url: "{{ url_for('cambiarGrafico' ,fecha='')   }}"+$('#fecha').val(), success: function(result){
+          $("body").attr('background',result['path']);
+          }})
+      })
+    });
+
+
+    
+    
+  </script>	
+ 
+{% endblock %}
