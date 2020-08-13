@@ -30,20 +30,20 @@
     <body background="{{url_for('static', filename='figura.png')}}" id="page-top" ">
       <div id="buttons" style="float: right;width:15%;margin-top: 50px;">
         <h4 >Fecha</h4>
-        <input type="hidden" id='fecha' value="">
-        <button  value="dia" type="button" class="btn btn-warning fecha" >Ultimo dia</button>
-        <button  value="semana" type="button" class="btn btn-info fecha" >Ultima semana</button>
-        <button  value="mes" type="button" class="btn btn-info fecha" >Ultimo mes</button>
+        <input type="hidden" id='fecha' value="1">
+        <button  value="1" type="button" class="btn btn-warning fecha" >Ultimo dia</button>
+        <button  value="7" type="button" class="btn btn-info fecha" >Ultima semana</button>
+        <button  value="31" type="button" class="btn btn-info fecha" >Ultimo mes</button>
         <hr>
         <h4>Datos</h4>
-        <input type="hidden" id='dato' value="">
-        <button value="" type="button" class="btn btn-info datos" >Ultimos 5 dias DE</button>
-        <button value="" type="button" class="btn btn-info datos" >Ultimos 5 dias DE</button>
+        <input type="hidden" id='datos' value="todos">
+        <button value="todos" type="button" class="btn btn-warning datos" >Ultimos 5 dias DE</button>
+        <button value="Kw/h" type="button" class="btn btn-info datos" >Ultimos 5 dias DE</button>
         <hr>
         <h4>Picos</h4>
-        <input type="hidden" id='grafico' value="">
-        <button value="" type="button" class="btn btn-info grafico" >Ultimos 5 dias DE</button>
-        <button value="" type="button" class="btn btn-info grafico" >Ultimos 5 dias DE</button>
+        <input type="hidden" id='grafico' value="barrasSeparadas">
+        <button value="barrasSeparadas" type="button" class="btn btn-warning grafico" >Ultimos 5 dias DE</button>
+        <button value="barrasSeparadas" type="button" class="btn btn-info grafico" >Ultimos 5 dias DE</button>
       </div>
     </body>
 {% endblock %}
@@ -63,12 +63,12 @@
         let buttonGroup= $(this).attr('class').split(" ")[2]
         let otrosClase = "btn btn-info " + buttonGroup
         let pressedClase = "btn btn-warning " + buttonGroup
-        console.log(otrosClase)
         $('.'+ buttonGroup).attr('class', otrosClase)
         $(this).attr('class', pressedClase)
-        $('#' + buttonGroup).val($(this).attr('id'))
+
+        $('#' + buttonGroup).val($(this) .val())
         
-        $.ajax({url: "{{ url_for('cambiarGrafico' ,fecha='')   }}"+$('#fecha').val(), success: function(result){
+        $.ajax({url: "{{ url_for('cambiarGrafico' ,fecha='')   }}"+$('#fecha').val()+'&'+'datos='+ $('#datos').val()+'&'+'grafico='+$('#grafico').val(), success: function(result){
           $("body").attr('background',result['path']);
           }})
       })

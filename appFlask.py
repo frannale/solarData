@@ -1,4 +1,4 @@
-from flask import Flask,render_template,jsonify,url_for,session
+from flask import Flask,render_template,jsonify,url_for,session,request
 import graficos
 import getCSV 
 # run
@@ -13,6 +13,11 @@ def hello_world():
 
 @app.route('/cambiarGrafico')
 def cambiarGrafico():
-    #ejecuta el grafico y retorna el path    
-    return jsonify(path=graficos.barrasSumadas())
+    #busca en el xls ,ejecuta el grafico y retorna el path
+    fecha = request.args.get('fecha')
+    datos = request.args.get('datos')
+    grafico = request.args.get('grafico')
+    resultado = getCSV.findFile(fecha,datos)
+
+    return jsonify(path=graficos.barrasSumadas(resultado),res=fecha)
     
